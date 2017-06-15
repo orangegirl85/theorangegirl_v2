@@ -1,5 +1,5 @@
-const Todo = require('../models').Todo;
-const TodoItem = require('../models').TodoItem;
+const Category = require('../models').Category;
+// const TodoItem = require('../models').TodoItem;
 
 // const fs = require('fs')
 // const path = require('path')
@@ -9,17 +9,19 @@ const TodoItem = require('../models').TodoItem;
 
 module.exports = {
   create(req, res) {
-    return Todo
+    return Category
       .create({
+        parentId: req.body.parentId || null,
         title: req.body.title,
-        project: req.body.project
+        type: req.body.type,
+        specificUrl: req.body.specificUrl || null
       })
-      .then((todo) => res.status(201).send(todo))
+      .then((category) => res.status(201).send(category))
       .catch((error) => res.status(400).send(error));
   },
 
   list(req, res) {
-    return Todo
+    return Category
       .findAll({
         // include: [{
         //   model: TodoItem,
@@ -30,80 +32,68 @@ module.exports = {
          // [{ model: TodoItem, as: 'todoItems' }, 'createdAt', 'ASC'],
         ],
       })
-      .then((todos) => {
-        res.status(200).send(todos)
-        //   const store = { todo: todos }
-        //
-        //   renderer.renderToString(
-        //       { url: req.url, store },
-        //       (err, html) => {
-        //           if (err) {
-        //               console.log(err)
-        //               return res.sendStatus(500)
-        //           }
-        //           // console.log(html)
-        //           res.send(index.replace('<div id=app></div>', html))
-        //       }
-        //   )
+      .then((categories) => {
+        res.status(200).send(categories)
       })
       .catch((error) => res.status(400).send(error));
   },
 
   retrieve(req, res) {
-    return Todo
-      .findById(req.params.todoId, {
+    return Category
+      .findById(req.params.categoryId, {
         // include: [{
         //   model: TodoItem,
         //   as: 'todoItems',
         // }],
       })
-      .then((todo) => {
-        if (!todo) {
+      .then((category) => {
+        if (!category) {
           return res.status(404).send({
-            message: 'Todo Not Found',
+            message: 'Category Not Found',
           });
         }
-        return res.status(200).send(todo);
+        return res.status(200).send(category);
       })
       .catch((error) => res.status(400).send(error));
   },
 
   update(req, res) {
-    return Todo
-      .findById(req.params.todoId, {
+    return Category
+      .findById(req.params.categoryId, {
         // include: [{
         //   model: TodoItem,
         //   as: 'todoItems',
         // }],
       })
-      .then(todo => {
-        if (!todo) {
+      .then(category => {
+        if (!category) {
           return res.status(404).send({
-            message: 'Todo Not Found',
+            message: 'Category Not Found',
           });
         }
-        return todo
+        return category
           .update({
-            title: req.body.title || todo.title,
-              project: req.body.project || todo.project,
-              done: req.body.done || todo.done
+            title: req.body.title || category.title,
+              type: req.body.type || category.type,
+              parentId: req.body.parentId || category.parentId,
+              specificUrl: req.body.specificUrl || category.specificUrl
           })
-          .then(() => res.status(200).send(todo))
+          .then(() => res.status(200).send(category))
           .catch((error) => res.status(400).send(error));
       })
       .catch((error) => res.status(400).send(error));
   },
 
   destroy(req, res) {
-    return Todo
-      .findById(req.params.todoId)
-      .then(todo => {
-        if (!todo) {
+    return Category
+      .findById(req.params.categoryId)
+      .then(category => {
+        if (!category) {
           return res.status(400).send({
-            message: 'Todo Not Found',
+            message: 'Category Not Found',
           });
         }
-        return todo
+        return category
           .destroy()
           .then(() => res.status(204).send())
           .catch((error) => res.status(400).send(error));

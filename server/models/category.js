@@ -1,17 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
-  const Todo = sequelize.define('Todo', {
+  const Category = sequelize.define('Category', {
+    parentId: {
+      type: DataTypes.INTEGER,
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-      project: {
-          type: DataTypes.STRING,
-          allowNull: false,
-      },
-      done: {
-          type: DataTypes.BOOLEAN,
-          defaultValue: false,
-      },
+    type: {
+      type: DataTypes.ENUM('JOB', 'PERSONAL'),
+      allowNull: false,
+    },
+    specificUrl: {
+      type: DataTypes.STRING,
+    },
   }, {
     classMethods: {
       // associate: (models) => {
@@ -22,5 +24,5 @@ module.exports = (sequelize, DataTypes) => {
       // },
     },
   });
-  return Todo;
+  return Category;
 };

@@ -1,23 +1,25 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Todos', {
+    queryInterface.createTable('Categories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      parentId: {
+        type: Sequelize.INTEGER,
+      },
       title: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      project: {
-        type: Sequelize.STRING,
+      type: {
+        type: Sequelize.ENUM('JOB', 'PERSONAL'),
         allowNull: false,
       },
-      done: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+      specificUrl: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -28,5 +30,5 @@ module.exports = {
         type: Sequelize.DATE,
       },
     }),
-  down: (queryInterface /* , Sequelize */) => queryInterface.dropTable('Todos'),
+  down: (queryInterface /* , Sequelize */) => queryInterface.dropTable('Categories'),
 };
