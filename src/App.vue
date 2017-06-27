@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <h1 class="ui dividing centered header">Vue.js Todo App</h1>
+    <h1 class="ui dividing centered header">Vue.js TheOrangegirl App</h1>
+    <router-link to="/" class="ui button">Home</router-link>
+    <router-link to="/register" class="ui button">Register</router-link>
+    <router-view></router-view>
     <div class='ui three column centered grid'>
       <div class='column'>
         <todo-list v-bind:todos="store.todos"></todo-list>
@@ -12,6 +15,7 @@
 
 <script>
 // import sweetalert from 'sweetalert'
+import Register from './components/Register.vue'
 import TodoList from './components/TodoList.vue'
 import CreateTodo from './components/CreateTodo.vue'
 // import axios from 'axios'
@@ -19,6 +23,7 @@ import CreateTodo from './components/CreateTodo.vue'
 export default {
   name: 'app',
   components: {
+    Register,
     TodoList,
     CreateTodo
   },

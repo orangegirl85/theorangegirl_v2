@@ -1,12 +1,13 @@
 const express = require('express')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
+const passport = require('passport')
 const fs = require('fs')
 const path = require('path')
 const code = fs.readFileSync(path.join(__dirname, './dist/server.js'), 'utf8')
 const renderer = require('vue-server-renderer').createBundleRenderer(code)
 const index = fs.readFileSync(path.join(__dirname, './dist/index.html'), 'utf8')
-const Todo = require(path.join(__dirname,'./server/models')).Todo
+const Category = require(path.join(__dirname,'./server/models')).Category
 const app = express()
 
 
@@ -15,12 +16,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/static', express.static(path.join(__dirname, './dist/static')))
-
+app.use(passport.initialize())
+app.use(passport.session())
 
 require('./server/routes')(app)
 
 app.get('*', (req, res) => {
-    Todo.findAll({ order: [ ['createdAt', 'DESC']], raw: true}).then((ttt) => {
+    Category.findAll({ order: [ ['createdAt', 'DESC']], raw: true}).then((ttt) => {
         const store = { todos: ttt }
 
         renderer.renderToString(

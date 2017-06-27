@@ -8,25 +8,34 @@ const store = {
     titleText: '',
     projectText: '',
     isCreating: false
+  },
+  form1: {
+    email: '',
+    password: '',
+    isCreating: false
   }
 }
 
 const API = {
   fetchTodos () {
     if (store.todos) return
-    axios.get(process.env.URL + 'api/todos')
+    axios.get(process.env.URL + 'api/categories')
       .then((res) => {
         store.todos = res.data
+        console.log(store.todos)
       })
   },
   postTodo (postBody) {
-    axios.post(process.env.URL + 'api/todos', postBody).then(response => router.go(router.currentRoute))
+    axios.post(process.env.URL + 'api/categories', postBody).then(response => router.go(router.currentRoute))
   },
   putTodo (id, putBody) {
-    axios.put(process.env.URL + 'api/todos/' + id, putBody).then(response => router.go(router.currentRoute))
+    axios.put(process.env.URL + 'api/categories/' + id, putBody).then(response => router.go(router.currentRoute))
   },
   deleteTodo (id) {
-    axios.delete(process.env.URL + 'api/todos/' + id).then(response => router.go(router.currentRoute))
+    axios.delete(process.env.URL + 'api/categories/' + id).then(response => router.go(router.currentRoute))
+  },
+  register (postBody) {
+    axios.post(process.env.URL + 'api/auth/register', postBody).then(response => router.go(router.currentRoute))
   }
 }
 
