@@ -8,15 +8,21 @@
         <div class='ui form'>
           <div class='field'>
             <label>Email</label>
-            <input v-model="store.form1.email" type='text'>
+            <input name="email" v-model="store.form1.email" v-validate="'required|email'" :class="{'input': true, 'is-danger': errors && errors.has('email') }" type='text'>
+            <i v-show="errors && errors.has('email')" class="fa fa-warning"></i>
+            <span v-show="errors && errors.has('email')" class="help is-danger">{{ errors && errors.first('email') }}</span>
           </div>
           <div class='field'>
             <label>Password</label>
-            <input v-model="store.form1.password" type='password'>
+            <input name="password" v-model="store.form1.password" type='password' v-validate="'required'" :class="{'input': true, 'is-danger': errors && errors.has('password') }">
+            <i v-show="errors && errors.has('password')" class="fa fa-warning"></i>
+            <span v-show="errors && errors.has('password')" class="help is-danger">{{ errors && errors.first('password') }}</span>
           </div>
           <div class='field'>
-            <label>Password</label>
-            <input v-model="store.form1.confirm_password" type='password'>
+            <label>Confirm Password</label>
+            <input name="password_confirmation" v-model="store.form1.confirm_password" type='password' v-validate="'required|confirmed:password'" data-vv-as="password" :class="{'input': true, 'is-danger': errors && errors.has('password_confirmation') }">
+            <i v-show="errors && errors.has('password_confirmation')" class="fa fa-warning"></i>
+            <span v-show="errors && errors.has('password_confirmation')" class="help is-danger">{{ errors && errors.first('password_confirmation') }}</span>
           </div>
           <div class='ui two button attached buttons'>
             <button class='ui basic blue button' v-on:click="sendForm()">
